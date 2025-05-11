@@ -1,19 +1,17 @@
-# Evabot – Cotizador de Seguros
+# Evabot – Futuro en Seguros
 
-Evabot es un asistente virtual que te ayuda a cotizar seguros para auto, hogar y vida.
+Evabot es un asistente virtual futurista que te ayuda a cotizar seguros con voz y chat IA.
 
-### 🚀 Características:
-- Cotizador en tiempo real
-- Asistente visual simpático
-- Diseño limpio y moderno
+## Despliegue
 
-### 📦 Tecnologías usadas:
-- HTML5 + CSS3
-- JavaScript puro
-- (Opcional: Backend con Node.js)
+- Subí a GitHub
+- Configurá `OPENAI_API_KEY` en Vercel
+- Deploy en Vercel, listo para producción
 
-### ✅ Proyecto desplegado:
-👉 [Ver en Vercel](https://evabot-iota.vercel.app)
+## Características
 
-### 👨‍💻 Autor:
-Jorge Alvez – Salto / Concordia
+- PWA (instalable y offline)
+- Modo claro/oscuro
+- Animaciones CSS
+- Web Speech API (voz)
+- Chat IA con GPT-3.5

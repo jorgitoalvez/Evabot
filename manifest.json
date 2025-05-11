@@ -1,0 +1,11 @@
+{
+  "name": "Evabot Seguros",
+  "short_name": "Evabot",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0f4f8",
+  "theme_color": "#3b82f6",
+  "icons": [
+    { "src": "img/evabot.png", "sizes": "192x192", "type": "image/png" }
+  ]
+}

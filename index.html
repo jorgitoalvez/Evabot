@@ -2,47 +2,46 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Evabot – Cotizador de Seguros</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Evabot – Futuro en Seguros</title>
+  <link rel="manifest" href="/manifest.json" />
   <link rel="stylesheet" href="styles/style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Evabot – Cotizador de Seguros</h1>
-    
-    <label for="tipo">Tipo de seguro:</label>
-    <select id="tipo">
-      <option value="auto">Auto</option>
-      <option value="hogar">Hogar</option>
-      <option value="vida">Vida</option>
-    </select>
+  <div class="app">
+    <header>
+      <h1>Evabot 🤖</h1>
+      <button id="theme-toggle">🌓</button>
+    </header>
 
-    <label for="valor">Valor declarado (ARS):</label>
-    <input type="number" id="valor" />
+    <main>
+      <section class="cotizador">
+        <h2>Cotizador Inteligente</h2>
+        <select id="tipo">
+          <option value="auto">Auto</option>
+          <option value="hogar">Hogar</option>
+          <option value="vida">Vida</option>
+        </select>
+        <input id="valor" type="number" placeholder="Valor declarado (ARS)" />
+        <label><input id="uso" type="checkbox" checked /> Uso personal</label>
+        <button id="btn-cotizar">Cotizar</button>
+      </section>
 
-    <label for="uso">Uso personal:</label>
-    <input type="checkbox" id="uso" checked />
-
-    <button onclick="cotizar()">Cotizar</button>
-
-    <div class="evabot">
-      <img src="img/evabot.png" alt="Evabot" class="evabot-avatar"/>
-      <p>¡Hola! Soy Evabot, ¿querés que te ayude a cotizar?</p>
-    </div>
+      <section class="chat-widget">
+        <img src="img/evabot.png" alt="Evabot" class="avatar" />
+        <div class="chat-window" id="chat-window"></div>
+        <div class="chat-input">
+          <input id="chat-msg" placeholder="Escribí tu consulta..." />
+          <button id="send-msg">Enviar</button>
+        </div>
+      </section>
+    </main>
   </div>
 
+  <script src="scripts/app.js"></script>
   <script>
-    function cotizar() {
-      const tipo = document.getElementById("tipo").value;
-      const valor = parseFloat(document.getElementById("valor").value || 0);
-      const uso = document.getElementById("uso").checked;
-
-      let resultado = valor * 0.05;
-      if (tipo === "hogar") resultado = valor * 0.03;
-      if (tipo === "vida") resultado = valor * 0.04;
-      if (!uso) resultado *= 1.2;
-
-      alert(`La cotización estimada para tu seguro de ${tipo} es $${resultado.toFixed(2)} ARS`);
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/scripts/sw.js');
     }
   </script>
 </body>
