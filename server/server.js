@@ -1,22 +1,48 @@
-function toggleChat() {
-  const bubble = document.getElementById("chatBubble");
-  bubble.style.display = bubble.style.display === "block" ? "none" : "block";
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
 }
 
-function cotizar() {
-  const tipo = document.getElementById("tipo").value;
-  const valor = parseFloat(document.getElementById("valor").value);
-  const uso = document.getElementById("uso").checked;
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
 
-  if (isNaN(valor) || valor <= 0) {
-    alert("Por favor, ingresá un valor válido.");
-    return;
-  }
+input, select, button {
+  display: block;
+  width: 100%;
+  margin: 12px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
 
-  let porcentaje = 0.05; // base 5%
-  if (!uso) porcentaje += 0.02; // uso comercial
+button {
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
 
-  let total = valor * porcentaje;
+button:hover {
+  background-color: #2563eb;
+}
 
-  alert(`El seguro estimado para un ${tipo} es de $${total.toFixed(2)} ARS.`);
+.evabot {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.evabot-avatar {
+  width: 120px;
+  border-radius: 50%;
 }

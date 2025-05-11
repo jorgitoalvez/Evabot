@@ -1,28 +1,19 @@
-# Evabot
+# Evabot – Cotizador de Seguros
 
-Evabot es un asistente virtual para ayudarte a cotizar y conocer seguros de todo tipo.
+Evabot es un asistente virtual que te ayuda a cotizar seguros para auto, hogar y vida.
 
-## 🚀 Instrucciones rápidas
+### 🚀 Características:
+- Cotizador en tiempo real
+- Asistente visual simpático
+- Diseño limpio y moderno
 
-### 1. Instalar dependencias
-```bash
-npm install
-```
+### 📦 Tecnologías usadas:
+- HTML5 + CSS3
+- JavaScript puro
+- (Opcional: Backend con Node.js)
 
-### 2. Crear archivo `.env`
-```bash
-cp server/.env.example server/.env
-```
+### ✅ Proyecto desplegado:
+👉 [Ver en Vercel](https://evabot-iota.vercel.app)
 
-### 3. Ejecutar el servidor
-```bash
-npm start
-```
-
-### 4. Desplegar en Vercel
-- Sube este proyecto a GitHub.
-- Entra a [vercel.com](https://vercel.com), conecta tu repo.
-- En settings, agrega las variables de entorno como en `.env.example`.
-- Click en “Deploy”.
-
-### ✨ Tu Evabot estará disponible online.
+### 👨‍💻 Autor:
+Jorge Alvez – Salto / Concordia
