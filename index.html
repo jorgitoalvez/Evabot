@@ -1,48 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang='es'>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Evabot – Futuro en Seguros</title>
-  <link rel="manifest" href="/manifest.json" />
-  <link rel="stylesheet" href="styles/style.css" />
+<meta charset='UTF-8'>
+<title>Evabot</title>
+<link rel='stylesheet' href='styles/style.css'>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>Evabot 🤖</h1>
-      <button id="theme-toggle">🌓</button>
-    </header>
-
-    <main>
-      <section class="cotizador">
-        <h2>Cotizador Inteligente</h2>
-        <select id="tipo">
-          <option value="auto">Auto</option>
-          <option value="hogar">Hogar</option>
-          <option value="vida">Vida</option>
-        </select>
-        <input id="valor" type="number" placeholder="Valor declarado (ARS)" />
-        <label><input id="uso" type="checkbox" checked /> Uso personal</label>
-        <button id="btn-cotizar">Cotizar</button>
-      </section>
-
-      <section class="chat-widget">
-        <img src="img/evabot.png" alt="Evabot" class="avatar" />
-        <div class="chat-window" id="chat-window"></div>
-        <div class="chat-input">
-          <input id="chat-msg" placeholder="Escribí tu consulta..." />
-          <button id="send-msg">Enviar</button>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <script src="scripts/app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/scripts/sw.js');
-    }
-  </script>
+<h1>Evabot – Cotizador de Seguros</h1>
+<!-- Contenido principal aquí -->
+<script src='server/chat.js'></script>
 </body>
 </html>

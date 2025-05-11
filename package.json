@@ -1,0 +1,8 @@
+{
+  "name": "evabot",
+  "version": "1.0.0",
+  "main": "server/chat.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
