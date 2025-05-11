@@ -1,407 +1,49 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Evabot – Cotizador de Seguros</title>
-  <link rel="stylesheet" href="styles/style.css" />
-</head>
-
-<style>
-  
-/* Estilo de Evabot */
-  #evabot {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #f2f2f2;
-    border: 2px solid #ccc;
-    border-radius: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    padding: 10px 15px;
-    display: flex;
-    align-items: center;
-    font-family: "Segoe UI", sans-serif;
-    z-index: 9999;
-    transition: transform 0.4s ease;
-    cursor: pointer;
-  }
-  
-  .evabot-cara {
-    font-size: 32px;
-    margin-right: 10px;
-    animation: saludo 1.8s infinite alternate;
-  }
-  
-  .evabot-texto {
-    font-size: 16px;
-    color: #444;
-    max-width: 180px;
-  }
-  
-  @keyframes saludo {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(10deg); }
-  }
-  .evabot-burbuja {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #ffecec;
-  border: 2px solid #e07d7d;
-  border-radius: 50%;
-  padding: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  cursor: pointer;
-  z-index: 9999;
-}
-
-.evabot-chat {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 300px;
-  background: #fff;
-  border: 2px solid #ddd;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
-  z-index: 9999;
-  overflow: hidden;
-  animation: aparecer 0.3s ease;
-}
-
-.evabot-header {
-  background: #e07d7d;
-  color: #fff;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
-}
-
-.evabot-mensajes {
-  padding: 10px;
-  height: 200px;
-  overflow-y: auto;
-  background: #f9f9f9;
-  font-size: 14px;
-}
-
-.mensaje {
-  margin-bottom: 8px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  max-width: 90%;
-}
-
-.mensaje.bot {
-  background: #eee;
-  align-self: flex-start;
-}
-
-.mensaje.user {
-  background: #dcf8c6;
-  align-self: flex-end;
-  text-align: right;
-}
-
-.evabot-form {
-  display: flex;
-  border-top: 1px solid #ddd;
-}
-
-.evabot-form input {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  font-size: 14px;
-}
-
-.evabot-form button {
-  background: #e07d7d;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-}
-
-.oculto {
-  display: none;
-}
-
-@keyframes aparecer {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-   </style>
-   
-<body>
-  <h1>🧠 Evabot – Cotizador de Seguros</h1>
-
-  <form id="form-cotizador">
-    <label>Tipo de seguro:</label>
-    <select name="tipo" required>
-      <option value="auto">Auto</option>
-      <option value="moto">Moto</option>
-      <option value="camion">Camión</option>
-      <option value="acoplado">Acoplado</option>
-      <option value="micro">Micro</option>
-      <option value="celular">Celular</option>
-      <option value="notebook">Notebook</option>
-      <option value="tv">TV</option>
-      <option value="otro">Otro</option>
-    </select><br><br>
-
-    <label>Valor declarado (ARS):</label>
-    <input type="number" name="valorDeclarado" required /><br><br>
-
-    <label>Uso personal:</label>
-    <input type="checkbox" name="usoPersonal" checked /><br><br>
-
-    <button type="submit">Cotizar</button>
-  </form>
-
-  <div id="resultado"></div>
-
-  <script>
-    const form = document.getElementById('form-cotizador');
-    const resultadoDiv = document.getElementById('resultado');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(form);
-      const data = {
-        tipo: formData.get('tipo'),
-        valorDeclarado: parseFloat(formData.get('valorDeclarado')),
-        usoPersonal: formData.get('usoPersonal') === 'on',
-      };
-
-      const res = await fetch('/api/cotizar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      const resultado = await res.json();
-
-      if (resultado.precioFinal) {
-        resultadoDiv.innerHTML = `<h3>Precio estimado: $${resultado.precioFinal} ARS</h3>`;
-      } else {
-        resultadoDiv.innerHTML = `<p style="color:red;">Error al cotizar</p>`;
-      }
-    });
-  </script>
-<!-- Evabot Chat -->
-<div id="evabot" class="evabot-burbuja" onclick="toggleChat()">
-  <div class="evabot-cara">🤖💁‍♀️</div>
-</div>
-
-<div id="evabot-chat" class="evabot-chat oculto">
-  <div class="evabot-header">
-    <span>Evabot 🤖</span>
-    <button onclick="toggleChat()">✖</button>
-  </div>
-  <div class="evabot-mensajes" id="chat-log">
-    <div class="mensaje bot">¡Hola! Soy Evabot. ¿En qué te puedo ayudar hoy? 🚗📱</div>
-  </div>
-  <form class="evabot-form" onsubmit="enviarMensaje(event)">
-    <input type="text" id="mensaje" placeholder="Escribí tu consulta..." required />
-    <button type="submit">Enviar</button>
-  </form>
-</div>
-
-
-
-</body>
-</html>
-<script>
-  function toggleChat() {
-    const chat = document.getElementById("evabot-chat");
-    chat.classList.toggle("oculto");
-  }
-
-  function enviarMensaje(event) {
-    event.preventDefault();
-    const input = document.getElementById("mensaje");
-    const texto = input.value.trim();
-    if (!texto) return;
-
-    const chatLog = document.getElementById("chat-log");
-
-    // Mensaje del usuario
-    const userMsg = document.createElement("div");
-    userMsg.className = "mensaje user";
-    userMsg.textContent = texto;
-    chatLog.appendChild(userMsg);
-
-    // Respuesta automática por ahora
-    const botMsg = document.createElement("div");
-    botMsg.className = "mensaje bot";
-    botMsg.textContent = "Gracias por tu mensaje. ¡Te responderé pronto! 😊";
-    setTimeout(() => {
-      chatLog.appendChild(botMsg);
-      chatLog.scrollTop = chatLog.scrollHeight;
-    }, 800);
-
-    input.value = "";
-    chatLog.scrollTop = chatLog.scrollHeight;
-  }
-</script>
-# Actualización del código para incluir animación del personaje, voz y estructura básica de IA
-
-# Actualización de la estructura de archivos HTML, CSS y JS
-html_content = """
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evabot - Asistente Virtual</title>
-    <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  
+  <h1>Evabot – Cotizador de Seguros</h1>
 
-    <!-- Contenedor del chat y robot -->
-    <div class="chat-container">
-        <div class="chat-bubble" id="chat-bubble">
-            <img src="A_2D_digital_illustration_features_a_friendly_fema.png" alt="Evabot" id="evabot-avatar" class="evabot-avatar">
-            <div id="evabot-text" class="evabot-text"></div>
-        </div>
+  <label for="tipo">Tipo de seguro:</label>
+  <select id="tipo">
+    <option>Auto</option>
+    <option>Camión</option>
+    <option>Moto</option>
+    <option>Micros</option>
+    <option>Acoplado</option>
+    <option>Celular</option>
+    <option>Equipos electrónicos</option>
+    <option>Otros</option>
+  </select>
+  <br/>
+
+  <label for="valor">Valor declarado (ARS):</label>
+  <input type="number" id="valor" />
+  <br/>
+
+  <label for="uso">Uso personal:</label>
+  <input type="checkbox" id="uso" checked />
+  <br/>
+
+  <button onclick="cotizar()">Cotizar</button>
+
+  <!-- Asistente Evabot -->
+  <div class="chat-container" onclick="toggleChat()">
+    <img src="img/evabot.png" alt="Evabot" class="evabot-avatar" />
+    alt="Evabot" class="evabot-avatar"/>
+    <div id="chatBubble" class="chat-bubble">
+      ¡Hola! Soy Evabot, ¿querés que te ayude a cotizar?
     </div>
+  </div>
 
-    <!-- Botón flotante para abrir chat -->
-    <div id="chat-btn" onclick="toggleChat()">
-        <img src="A_2D_digital_illustration_features_a_friendly_fema.png" alt="Evabot" class="evabot-avatar">
-    </div>
-
-    <!-- Script para animaciones y voz -->
-    <script src="scripts/evabot.js"></script>
+  <script src="script.js"></script>
+  
 </body>
 </html>
-"""
-
-css_content = """
-/* Estilos básicos */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f7f7f7;
-}
-
-.chat-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-.chat-bubble {
-    position: relative;
-    background-color: #007bff;
-    color: white;
-    border-radius: 20px;
-    padding: 20px;
-    max-width: 250px;
-    animation: fadeIn 0.3s ease-out;
-}
-
-.evabot-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-    animation: blinkEyes 2s infinite alternate;
-}
-
-.evabot-text {
-    margin-top: 5px;
-}
-
-#chat-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 999;
-    background-color: #007bff;
-    border-radius: 50%;
-    padding: 15px;
-    cursor: pointer;
-}
-
-#chat-btn img {
-    width: 50px;
-    height: 50px;
-}
-
-/* Animaciones */
-@keyframes blinkEyes {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0.5;
-    }
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-"""
-
-# Código JS para interacción
-js_content = """
-// Función para mostrar chat
-function toggleChat() {
-    const chatBubble = document.getElementById('chat-bubble');
-    const textContainer = document.getElementById('evabot-text');
-    chatBubble.style.display = chatBubble.style.display === 'block' ? 'none' : 'block';
-
-    if (chatBubble.style.display === 'block') {
-        setTimeout(() => {
-            const message = '¡Hola! Soy Evabot, ¿en qué puedo ayudarte?';
-            textContainer.innerHTML = message;
-            speakText(message);
-        }, 500);
-    }
-}
-
-// Función para que el bot hable
-function speakText(text) {
-    const speech = new SpeechSynthesisUtterance(text);
-    speech.lang = 'es-ES';
-    window.speechSynthesis.speak(speech);
-}
-
-// Llamada inicial
-toggleChat();
-"""
-
-# Guardar los archivos actualizados en el proyecto
-path_html = "/mnt/data/evabot/index.html"
-path_css = "/mnt/data/evabot/styles/style.css"
-path_js = "/mnt/data/evabot/scripts/evabot.js"
-
-# Guardar los contenidos en sus respectivos archivos
-with open(path_html, "w", encoding="utf-8") as f:
-    f.write(html_content)
-
-with open(path_css, "w", encoding="utf-8") as f:
-    f.write(css_content)
-
-with open(path_js, "w", encoding="utf-8") as f:
-    f.write(js_content)
-
-# Devolver rutas para la descarga
-(path_html, path_css, path_js)
 

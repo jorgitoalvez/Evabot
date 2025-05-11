@@ -1,15 +1,22 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+function toggleChat() {
+  const bubble = document.getElementById("chatBubble");
+  bubble.style.display = bubble.style.display === "block" ? "none" : "block";
+}
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+function cotizar() {
+  const tipo = document.getElementById("tipo").value;
+  const valor = parseFloat(document.getElementById("valor").value);
+  const uso = document.getElementById("uso").checked;
 
-const PORT = process.env.PORT || 3000;
+  if (isNaN(valor) || valor <= 0) {
+    alert("Por favor, ingresá un valor válido.");
+    return;
+  }
 
-app.get('/', (req, res) => {
-  res.send('Evabot backend activo.');
-});
+  let porcentaje = 0.05; // base 5%
+  if (!uso) porcentaje += 0.02; // uso comercial
 
-app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
+  let total = valor * porcentaje;
+
+  alert(`El seguro estimado para un ${tipo} es de $${total.toFixed(2)} ARS.`);
+}
