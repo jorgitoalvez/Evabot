@@ -6,6 +6,139 @@
   <title>Evabot – Cotizador de Seguros</title>
   <link rel="stylesheet" href="styles/style.css" />
 </head>
+
+<style>
+  
+/* Estilo de Evabot */
+  #evabot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #f2f2f2;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    font-family: "Segoe UI", sans-serif;
+    z-index: 9999;
+    transition: transform 0.4s ease;
+    cursor: pointer;
+  }
+  
+  .evabot-cara {
+    font-size: 32px;
+    margin-right: 10px;
+    animation: saludo 1.8s infinite alternate;
+  }
+  
+  .evabot-texto {
+    font-size: 16px;
+    color: #444;
+    max-width: 180px;
+  }
+  
+  @keyframes saludo {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(10deg); }
+  }
+  .evabot-burbuja {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ffecec;
+  border: 2px solid #e07d7d;
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 9999;
+}
+
+.evabot-chat {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  overflow: hidden;
+  animation: aparecer 0.3s ease;
+}
+
+.evabot-header {
+  background: #e07d7d;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.evabot-mensajes {
+  padding: 10px;
+  height: 200px;
+  overflow-y: auto;
+  background: #f9f9f9;
+  font-size: 14px;
+}
+
+.mensaje {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  max-width: 90%;
+}
+
+.mensaje.bot {
+  background: #eee;
+  align-self: flex-start;
+}
+
+.mensaje.user {
+  background: #dcf8c6;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.evabot-form {
+  display: flex;
+  border-top: 1px solid #ddd;
+}
+
+.evabot-form input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  font-size: 14px;
+}
+
+.evabot-form button {
+  background: #e07d7d;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.oculto {
+  display: none;
+}
+
+@keyframes aparecer {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+   </style>
+   
 <body>
   <h1>🧠 Evabot – Cotizador de Seguros</h1>
 
@@ -63,5 +196,60 @@
       }
     });
   </script>
+<!-- Evabot Chat -->
+<div id="evabot" class="evabot-burbuja" onclick="toggleChat()">
+  <div class="evabot-cara">🤖💁‍♀️</div>
+</div>
+
+<div id="evabot-chat" class="evabot-chat oculto">
+  <div class="evabot-header">
+    <span>Evabot 🤖</span>
+    <button onclick="toggleChat()">✖</button>
+  </div>
+  <div class="evabot-mensajes" id="chat-log">
+    <div class="mensaje bot">¡Hola! Soy Evabot. ¿En qué te puedo ayudar hoy? 🚗📱</div>
+  </div>
+  <form class="evabot-form" onsubmit="enviarMensaje(event)">
+    <input type="text" id="mensaje" placeholder="Escribí tu consulta..." required />
+    <button type="submit">Enviar</button>
+  </form>
+</div>
+
+
+
 </body>
 </html>
+<script>
+  function toggleChat() {
+    const chat = document.getElementById("evabot-chat");
+    chat.classList.toggle("oculto");
+  }
+
+  function enviarMensaje(event) {
+    event.preventDefault();
+    const input = document.getElementById("mensaje");
+    const texto = input.value.trim();
+    if (!texto) return;
+
+    const chatLog = document.getElementById("chat-log");
+
+    // Mensaje del usuario
+    const userMsg = document.createElement("div");
+    userMsg.className = "mensaje user";
+    userMsg.textContent = texto;
+    chatLog.appendChild(userMsg);
+
+    // Respuesta automática por ahora
+    const botMsg = document.createElement("div");
+    botMsg.className = "mensaje bot";
+    botMsg.textContent = "Gracias por tu mensaje. ¡Te responderé pronto! 😊";
+    setTimeout(() => {
+      chatLog.appendChild(botMsg);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }, 800);
+
+    input.value = "";
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+</script>
+
