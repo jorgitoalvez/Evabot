@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Evabot – Cotizador de Seguros</title>
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <h1>🧠 Evabot – Cotizador de Seguros</h1>
+
+  <form id="form-cotizador">
+    <label>Tipo de seguro:</label>
+    <select name="tipo" required>
+      <option value="auto">Auto</option>
+      <option value="moto">Moto</option>
+      <option value="camion">Camión</option>
+      <option value="acoplado">Acoplado</option>
+      <option value="micro">Micro</option>
+      <option value="celular">Celular</option>
+      <option value="notebook">Notebook</option>
+      <option value="tv">TV</option>
+      <option value="otro">Otro</option>
+    </select><br><br>
+
+    <label>Valor declarado (ARS):</label>
+    <input type="number" name="valorDeclarado" required /><br><br>
+
+    <label>Uso personal:</label>
+    <input type="checkbox" name="usoPersonal" checked /><br><br>
+
+    <button type="submit">Cotizar</button>
+  </form>
+
+  <div id="resultado"></div>
+
+  <script>
+    const form = document.getElementById('form-cotizador');
+    const resultadoDiv = document.getElementById('resultado');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = {
+        tipo: formData.get('tipo'),
+        valorDeclarado: parseFloat(formData.get('valorDeclarado')),
+        usoPersonal: formData.get('usoPersonal') === 'on',
+      };
+
+      const res = await fetch('/api/cotizar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const resultado = await res.json();
+
+      if (resultado.precioFinal) {
+        resultadoDiv.innerHTML = `<h3>Precio estimado: $${resultado.precioFinal} ARS</h3>`;
+      } else {
+        resultadoDiv.innerHTML = `<p style="color:red;">Error al cotizar</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
